@@ -1,0 +1,107 @@
+1) WRITE CODE FOR PRINT ODD NUMBERS IN RANGE 2 TO 50 ON CONSOLE 
+-->
+DECLARE
+i number;
+
+BEGIN
+dbms_output.put_line('Odd numbers from 2 to 50 are:');
+for i in 2..50
+loop
+if mod(i,2)=1 then
+dbms_output.put_line(i);
+end if;
+end loop;
+
+END
+
+2) WRITE PROGRAM TO FETCH VALUES FROM OPD TABLE AND SHOW IT ON CONSOLE
+-->
+create database hos;
+
+use h;
+
+create table opd(opdid int primary key,doctorid int,patientid int,prescription varchar(50));
+
+insert into opd values(1,101,201,"Medicines for dengu"),(2,102,202,"Sickness"),(3,103,203,"cough"),(4,104,204,"typhoid"),(5,105,205,"fewer");
+
+DECLARE
+c_doctorid opd.doctorid%TYPE;
+c_patientid opd.patientid%TYPE;
+c.prescription opd.prescription%TYPE;
+BEGIN
+SELECT doctorid,patientid,prescription INTO c_doctorid,c_patientid,c_prescription FROM opd;
+DBMS_OUTPUT.PUT_LINE(c_doctorid ||' '||c_patientid || ' '|| c_prescription);
+END;
+/
+
+3) WRITE PROGRAM TO CALCULATE PERCENTAGE FROM OUT OF 5 SUBJECT 
+-->
+declare 
+
+s1 float:=70;
+s2 float:=80;
+s3 float:=75;
+s4 float:=95;
+s5 float:=75;
+per float;
+
+begin
+
+per:=((s1+s2+s3+s4+s5)/500)*100;
+
+dbms_output.put_line('Percentage: '|| per);
+
+end;
+/
+
+4) WRITE PROGRAM TO FETCH 1ST ROW VALUE OF SALARY COLUMN FROM EMPLOYEE TABLE AND DISPLAY IT WITH INCREMENT BY 5K
+-->
+create table employee(empid int,salary int);
+
+insert into employee values(1,5500);
+insert into employee values(3,5000);
+
+SELECT * FROM EMPLOYEE;
+
+declare 
+e_empid employee.empid%TYPE;
+e_salary employee.salary%TYPE;
+
+begin
+
+select empid,salary into e_empid,e_salary from employee where empid=3;
+
+dbms_output.put_line(e_empid || ' ' || e_salary);
+
+update employee set salary=salary+5000;
+
+select empid,salary into e_empid,e_salary from employee where empid=3;
+
+dbms_output.put_line(e_empid || ' ' || e_salary);
+
+end;
+/ 
+
+OR
+
+create table salary(id int,salary int);
+
+insert into salary values(1,2000);
+insert into salary values(2,5000);
+
+select * from salary;
+
+declare
+i salary.id%TYPE;
+s salary.salary%TYPE;
+begin
+select id,salary into i,s from salary where id=1;
+dbms_output.put_line(i || ' ' || s);
+end;
+/
+
+
+5) WRITE PROGRAM TO JOIN TWO TABLES
+
+
+

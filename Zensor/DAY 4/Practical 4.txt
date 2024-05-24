@@ -1,0 +1,412 @@
+1)create table project and projallocate
+  - project coloumn -> projid,projname
+  - projallocate column -> empid,empname,projid
+	- insert 5 rows in each table
+	- perform full join projid,projname,empid
+.............................................................................................................................................................
+
+
+MariaDB [(none)]> create database prj;
+Query OK, 1 row affected (0.012 sec)
+
+MariaDB [(none)]> use prj;
+Database changed
+MariaDB [prj]> create table project(projid int primary key,projname varchar(50));
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [prj]> create table projallocate(empid int primary key,empname varchar(50),projid int);
+Query OK, 0 rows affected (0.039 sec)
+
+MariaDB [prj]> insert into project values(1,"Online book exchange"),(2,"Garbage management system"),(3,"Weather forecast"),(4,"House price prediction"),(5,"Stock market analysis");
+Query OK, 5 rows affected (0.013 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from project;
++--------+---------------------------+
+| projid | projname                  |
++--------+---------------------------+
+|      1 | Online book exchange      |
+|      2 | Garbage management system |
+|      3 | Weather forecast          |
+|      4 | House price prediction    |
+|      5 | Stock market analysis     |
++--------+---------------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [prj]> insert into projallocate values(101,"Rohan",1),(102,"Riya",2),(103,"Aakash",3),(104,"Supriya",5),(105,"Sumit",4);
+Query OK, 5 rows affected (0.013 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from projallocate;
++-------+---------+--------+
+| empid | empname | projid |
++-------+---------+--------+
+|   101 | Rohan   |      1 |
+|   102 | Riya    |      2 |
+|   103 | Aakash  |      3 |
+|   104 | Supriya |      5 |
+|   105 | Sumit   |      4 |
++-------+---------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [prj]> insert into project values(6,"Heart Prediction"),(7,"Dynamic Resource allocation");
+Query OK, 2 rows affected (0.011 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from project;
++--------+-----------------------------+
+| projid | projname                    |
++--------+-----------------------------+
+|      1 | Online book exchange        |
+|      2 | Garbage management system   |
+|      3 | Weather forecast            |
+|      4 | House price prediction      |
+|      5 | Stock market analysis       |
+|      6 | Heart Prediction            |
+|      7 | Dynamic Resource allocation |
++--------+-----------------------------+
+7 rows in set (0.000 sec)
+
+MariaDB [prj]> select * from projallocate;
++-------+---------+--------+
+| empid | empname | projid |
++-------+---------+--------+
+|   101 | Rohan   |      1 |
+|   102 | Riya    |      2 |
+|   103 | Aakash  |      3 |
+|   104 | Supriya |      5 |
+|   105 | Sumit   |      4 |
++-------+---------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [prj]> select * from project as p left join projallocate as pa on p.projid=pa.projid;
++--------+-----------------------------+-------+---------+--------+
+| projid | projname                    | empid | empname | projid |
++--------+-----------------------------+-------+---------+--------+
+|      1 | Online book exchange        |   101 | Rohan   |      1 |
+|      2 | Garbage management system   |   102 | Riya    |      2 |
+|      3 | Weather forecast            |   103 | Aakash  |      3 |
+|      5 | Stock market analysis       |   104 | Supriya |      5 |
+|      4 | House price prediction      |   105 | Sumit   |      4 |
+|      6 | Heart Prediction            |  NULL | NULL    |   NULL |
+|      7 | Dynamic Resource allocation |  NULL | NULL    |   NULL |
++--------+-----------------------------+-------+---------+--------+
+7 rows in set (0.001 sec)
+
+MariaDB [prj]> select * from project as p right join projallocate as pa on p.projid=pa.projid;
++--------+---------------------------+-------+---------+--------+
+| projid | projname                  | empid | empname | projid |
++--------+---------------------------+-------+---------+--------+
+|      1 | Online book exchange      |   101 | Rohan   |      1 |
+|      2 | Garbage management system |   102 | Riya    |      2 |
+|      3 | Weather forecast          |   103 | Aakash  |      3 |
+|      5 | Stock market analysis     |   104 | Supriya |      5 |
+|      4 | House price prediction    |   105 | Sumit   |      4 |
++--------+---------------------------+-------+---------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [prj]> select p.projid,p.projname,pa.empid from project as p inner join projallocate as pa on p.projid=pa.projid;
++--------+---------------------------+-------+
+| projid | projname                  | empid |
++--------+---------------------------+-------+
+|      1 | Online book exchange      |   101 |
+|      2 | Garbage management system |   102 |
+|      3 | Weather forecast          |   103 |
+|      5 | Stock market analysis     |   104 |
+|      4 | House price prediction    |   105 |
++--------+---------------------------+-------+
+5 rows in set (0.001 sec)
+...................................................................................................................................................................
+
+
+
+
+
+
+
+
+2)create table salesinfo with region,salsman,sales  
+  coloumn
+  - insert 10 rows 
+  write query for show
+############################################ 
+  region         salesman         sales
+--------------------------------------------
+  2ndrow_value  2ndrow_value   2ndrow_value 
+  6throw_value  6throw_value   6throw_value
+  1strow_value  1strow_value   1strow_value
+..................................................................................................................................................................
+
+
+MariaDB [prj]> create table salesinfo(region varchar(50),salesman varchar(50),sales int);
+Query OK, 0 rows affected (0.024 sec)
+
+MariaDB [prj]> insert into salesinfo values("Nagpur","Akshay",500),("Nandura","Rahul",800),("Amrawati","Naina",300),("Pune","Samayra",900),("Pimpri","Rinku",1000),("Nashik","Ravi",550),("Akola","Aakash",860),("Yavatmal","Punam",880),("Pune","Sanket",990),("Akurdi","Abhi",1000);
+Query OK, 10 rows affected (0.004 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from salesinfo;
++----------+----------+-------+
+| region   | salesman | sales |
++----------+----------+-------+
+| Nagpur   | Akshay   |   500 |
+| Nandura  | Rahul    |   800 |
+| Amrawati | Naina    |   300 |
+| Pune     | Samayra  |   900 |
+| Pimpri   | Rinku    |  1000 |
+| Nashik   | Ravi     |   550 |
+| Akola    | Aakash   |   860 |
+| Yavatmal | Punam    |   880 |
+| Pune     | Sanket   |   990 |
+| Akurdi   | Abhi     |  1000 |
++----------+----------+-------+
+10 rows in set (0.001 sec)
+
+MariaDB [prj]> select * from salesinfo where salesman in ("Rahul","Ravi","Akshay");
++---------+----------+-------+
+| region  | salesman | sales |
++---------+----------+-------+
+| Nagpur  | Akshay   |   500 |
+| Nandura | Rahul    |   800 |
+| Nashik  | Ravi     |   550 |
++---------+----------+-------+
+3 rows in set (0.000 sec)
+......................................................................................................................................................................
+
+
+
+
+
+
+
+
+3)Create table employee and departmants 
+  employee coloumn -> empid,empname,deptid
+  departments column -> deptid,deptname
+	-insert 10 rows
+  -perform join operation on tables - Inner join,Left join,Right join,Full join,Cross join
+....................................................................................................................................................................... 
+
+
+MariaDB [prj]> create table employee(empid int primary key,empname varchar(50),deptid int);
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [prj]> create table departments(deptid int primary key,deptname varchar(50));
+Query OK, 0 rows affected (0.027 sec)
+
+MariaDB [prj]> insert into employee values(1,"Akshay",101),(2,"Ram",102),(3,"Raksha",103),(4,"Punam",105),(5,"Gauri",105),(6,"Sumit",107),(7,"Aaru",104),(8,"Naina",104),(9,"Kalyani",109),(10,"Gaurav",108);
+Query OK, 10 rows affected (0.012 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from employee;
++-------+---------+--------+
+| empid | empname | deptid |
++-------+---------+--------+
+|     1 | Akshay  |    101 |
+|     2 | Ram     |    102 |
+|     3 | Raksha  |    103 |
+|     4 | Punam   |    105 |
+|     5 | Gauri   |    105 |
+|     6 | Sumit   |    107 |
+|     7 | Aaru    |    104 |
+|     8 | Naina   |    104 |
+|     9 | Kalyani |    109 |
+|    10 | Gaurav  |    108 |
++-------+---------+--------+
+10 rows in set (0.000 sec)
+
+MariaDB [prj]> insert into departments values(101,"General Management"),(102,"Marketing Department"),(103,"Operations Department"),(104,"Finance Department"),(105,"Sales Department"),
+    -> (106,"Human Resource Department"),(107,"Purchase Department"),(108,"Production dept."),(109,"Mrketing"),(110,"Risk mgt."),(111,"Technology");
+Query OK, 11 rows affected (0.012 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+MariaDB [prj]> select * from departments;
++--------+---------------------------+
+| deptid | deptname                  |
++--------+---------------------------+
+|    101 | General Management        |
+|    102 | Marketing Department      |
+|    103 | Operations Department     |
+|    104 | Finance Department        |
+|    105 | Sales Department          |
+|    106 | Human Resource Department |
+|    107 | Purchase Department       |
+|    108 | Production dept.          |
+|    109 | Mrketing                  |
+|    110 | Risk mgt.                 |
+|    111 | Technology                |
++--------+---------------------------+
+11 rows in set (0.000 sec)
+
+MariaDB [prj]> select * from employee as e inner join departments as d on e.deptid=d.deptid;
++-------+---------+--------+--------+-----------------------+
+| empid | empname | deptid | deptid | deptname              |
++-------+---------+--------+--------+-----------------------+
+|     1 | Akshay  |    101 |    101 | General Management    |
+|     2 | Ram     |    102 |    102 | Marketing Department  |
+|     3 | Raksha  |    103 |    103 | Operations Department |
+|     4 | Punam   |    105 |    105 | Sales Department      |
+|     5 | Gauri   |    105 |    105 | Sales Department      |
+|     6 | Sumit   |    107 |    107 | Purchase Department   |
+|     7 | Aaru    |    104 |    104 | Finance Department    |
+|     8 | Naina   |    104 |    104 | Finance Department    |
+|     9 | Kalyani |    109 |    109 | Mrketing              |
+|    10 | Gaurav  |    108 |    108 | Production dept.      |
++-------+---------+--------+--------+-----------------------+
+10 rows in set (0.001 sec)
+
+MariaDB [prj]> select * from employee as e left join departments as d on e.deptid=d.deptid;
++-------+---------+--------+--------+-----------------------+
+| empid | empname | deptid | deptid | deptname              |
++-------+---------+--------+--------+-----------------------+
+|     1 | Akshay  |    101 |    101 | General Management    |
+|     2 | Ram     |    102 |    102 | Marketing Department  |
+|     3 | Raksha  |    103 |    103 | Operations Department |
+|     4 | Punam   |    105 |    105 | Sales Department      |
+|     5 | Gauri   |    105 |    105 | Sales Department      |
+|     6 | Sumit   |    107 |    107 | Purchase Department   |
+|     7 | Aaru    |    104 |    104 | Finance Department    |
+|     8 | Naina   |    104 |    104 | Finance Department    |
+|     9 | Kalyani |    109 |    109 | Mrketing              |
+|    10 | Gaurav  |    108 |    108 | Production dept.      |
++-------+---------+--------+--------+-----------------------+
+10 rows in set (0.000 sec)
+
+MariaDB [prj]> select * from employee as e right join departments as d on e.deptid=d.deptid;
++-------+---------+--------+--------+---------------------------+
+| empid | empname | deptid | deptid | deptname                  |
++-------+---------+--------+--------+---------------------------+
+|     1 | Akshay  |    101 |    101 | General Management        |
+|     2 | Ram     |    102 |    102 | Marketing Department      |
+|     3 | Raksha  |    103 |    103 | Operations Department     |
+|     4 | Punam   |    105 |    105 | Sales Department          |
+|     5 | Gauri   |    105 |    105 | Sales Department          |
+|     6 | Sumit   |    107 |    107 | Purchase Department       |
+|     7 | Aaru    |    104 |    104 | Finance Department        |
+|     8 | Naina   |    104 |    104 | Finance Department        |
+|     9 | Kalyani |    109 |    109 | Mrketing                  |
+|    10 | Gaurav  |    108 |    108 | Production dept.          |
+|  NULL | NULL    |   NULL |    106 | Human Resource Department |
+|  NULL | NULL    |   NULL |    110 | Risk mgt.                 |
+|  NULL | NULL    |   NULL |    111 | Technology                |
++-------+---------+--------+--------+---------------------------+
+13 rows in set (0.001 sec)
+
+MariaDB [prj]> select e.deptid,d.deptname from employee as e cross join departments as d;
++--------+---------------------------+
+| deptid | deptname                  |
++--------+---------------------------+
+|    101 | General Management        |
+|    102 | General Management        |
+|    103 | General Management        |
+|    105 | General Management        |
+|    105 | General Management        |
+|    107 | General Management        |
+|    104 | General Management        |
+|    104 | General Management        |
+|    109 | General Management        |
+|    108 | General Management        |
+|    101 | Marketing Department      |
+|    102 | Marketing Department      |
+|    103 | Marketing Department      |
+|    105 | Marketing Department      |
+|    105 | Marketing Department      |
+|    107 | Marketing Department      |
+|    104 | Marketing Department      |
+|    104 | Marketing Department      |
+|    109 | Marketing Department      |
+|    108 | Marketing Department      |
+|    101 | Operations Department     |
+|    102 | Operations Department     |
+|    103 | Operations Department     |
+|    105 | Operations Department     |
+|    105 | Operations Department     |
+|    107 | Operations Department     |
+|    104 | Operations Department     |
+|    104 | Operations Department     |
+|    109 | Operations Department     |
+|    108 | Operations Department     |
+|    101 | Finance Department        |
+|    102 | Finance Department        |
+|    103 | Finance Department        |
+|    105 | Finance Department        |
+|    105 | Finance Department        |
+|    107 | Finance Department        |
+|    104 | Finance Department        |
+|    104 | Finance Department        |
+|    109 | Finance Department        |
+|    108 | Finance Department        |
+|    101 | Sales Department          |
+|    102 | Sales Department          |
+|    103 | Sales Department          |
+|    105 | Sales Department          |
+|    105 | Sales Department          |
+|    107 | Sales Department          |
+|    104 | Sales Department          |
+|    104 | Sales Department          |
+|    109 | Sales Department          |
+|    108 | Sales Department          |
+|    101 | Human Resource Department |
+|    102 | Human Resource Department |
+|    103 | Human Resource Department |
+|    105 | Human Resource Department |
+|    105 | Human Resource Department |
+|    107 | Human Resource Department |
+|    104 | Human Resource Department |
+|    104 | Human Resource Department |
+|    109 | Human Resource Department |
+|    108 | Human Resource Department |
+|    101 | Purchase Department       |
+|    102 | Purchase Department       |
+|    103 | Purchase Department       |
+|    105 | Purchase Department       |
+|    105 | Purchase Department       |
+|    107 | Purchase Department       |
+|    104 | Purchase Department       |
+|    104 | Purchase Department       |
+|    109 | Purchase Department       |
+|    108 | Purchase Department       |
+|    101 | Production dept.          |
+|    102 | Production dept.          |
+|    103 | Production dept.          |
+|    105 | Production dept.          |
+|    105 | Production dept.          |
+|    107 | Production dept.          |
+|    104 | Production dept.          |
+|    104 | Production dept.          |
+|    109 | Production dept.          |
+|    108 | Production dept.          |
+|    101 | Mrketing                  |
+|    102 | Mrketing                  |
+|    103 | Mrketing                  |
+|    105 | Mrketing                  |
+|    105 | Mrketing                  |
+|    107 | Mrketing                  |
+|    104 | Mrketing                  |
+|    104 | Mrketing                  |
+|    109 | Mrketing                  |
+|    108 | Mrketing                  |
+|    101 | Risk mgt.                 |
+|    102 | Risk mgt.                 |
+|    103 | Risk mgt.                 |
+|    105 | Risk mgt.                 |
+|    105 | Risk mgt.                 |
+|    107 | Risk mgt.                 |
+|    104 | Risk mgt.                 |
+|    104 | Risk mgt.                 |
+|    109 | Risk mgt.                 |
+|    108 | Risk mgt.                 |
+|    101 | Technology                |
+|    102 | Technology                |
+|    103 | Technology                |
+|    105 | Technology                |
+|    105 | Technology                |
+|    107 | Technology                |
+|    104 | Technology                |
+|    104 | Technology                |
+|    109 | Technology                |
+|    108 | Technology                |
++--------+---------------------------+
+110 rows in set (0.000 sec)
+
+MariaDB [prj]>

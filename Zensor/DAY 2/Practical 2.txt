@@ -1,0 +1,169 @@
+MariaDB [(none)]> show databases;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    8
+Current database: *** NONE ***
+
++--------------------+
+| Database           |
++--------------------+
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| project            |
+| test               |
+| wms2               |
++--------------------+
+8 rows in set (0.024 sec)
+
+MariaDB [(none)]> create database hospital;
+Query OK, 1 row affected (0.012 sec)
+
+MariaDB [(none)]> use hospital;
+Database changed
+
+MariaDB [hospital]> create table opd(opdid int primary key,doctorid int,patientid int,prescription varchar(50));
+Query OK, 0 rows affected (0.034 sec)
+
+MariaDB [hospital]> create table medical(medicineid int primary key,medicine_name varchar(50),quantity int,company varchar(50));
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [hospital]> create table icu(id int primary key,no_of_patients int);
+Query OK, 0 rows affected (0.040 sec)
+
+MariaDB [hospital]> create table patients(pid int primary key unique,pname varchar(50),disease varchar(100),age int,address varchar(50),mo_no varchar(10));
+Query OK, 0 rows affected (0.037 sec)
+
+MariaDB [hospital]> create table doctors(did int primary key auto_increment,dname varchar(50),age int,mo_no varchar(10),degree varchar(50));
+Query OK, 0 rows affected (0.038 sec)
+
+MariaDB [hospital]> insert into opd values(1,101,201,"Medicines for dengu"),(2,102,202,"Sickness"),(3,103,203,"cough"),(4,104,204,"typhoid"),(5,105,205,"fewer");
+Query OK, 5 rows affected (0.013 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from opd;
++-------+----------+-----------+---------------------+
+| opdid | doctorid | patientid | prescription        |
++-------+----------+-----------+---------------------+
+|     1 |      101 |       201 | Medicines for dengu |
+|     2 |      102 |       202 | Sickness            |
+|     3 |      103 |       203 | cough               |
+|     4 |      104 |       204 | typhoid             |
+|     5 |      105 |       205 | fewer               |
++-------+----------+-----------+---------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]> insert into medical values(111,"abc",500,"aaa"),(222,"paracitmol",200,"bbb"),(333,"coldex",987,"ccc"),(444,"pqr",456,"ddd"),(555,"oz",550,"eee");
+Query OK, 5 rows affected (0.011 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from medical;
++------------+---------------+----------+---------+
+| medicineid | medicine_name | quantity | company |
++------------+---------------+----------+---------+
+|        111 | abc           |      500 | aaa     |
+|        222 | paracitmol    |      200 | bbb     |
+|        333 | coldex        |      987 | ccc     |
+|        444 | pqr           |      456 | ddd     |
+|        555 | oz            |      550 | eee     |
++------------+---------------+----------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]>  insert into icu values(1001,2),(1002,5),(1003,6),(1004,2),(1005,7);
+Query OK, 5 rows affected (0.014 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from icu;
++------+----------------+
+| id   | no_of_patients |
++------+----------------+
+| 1001 |              2 |
+| 1002 |              5 |
+| 1003 |              6 |
+| 1004 |              2 |
+| 1005 |              7 |
++------+----------------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]> insert into patients values(201,"ram","normal fewer",45,"nandura","9867453467"),(202,"sanket","cough",40,"pune","7896457867"),(204,"tommy","typhoid",30,"nashik","7896453456"),(206,"kalyani","cold",35,"amrawati","9856345789"),(207,"rinku","headache",24,"amrawati","6789453456");
+Query OK, 5 rows affected (0.012 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from patients;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 |
++-----+---------+--------------+------+----------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [hospital]> insert into doctors values(101,"sam",37,"98765422","mbbs"),(102,"Siya",45,"9876543210","bhms"),(103,"Aakash",26,"67893456787","bhms");
+Query OK, 3 rows affected, 1 warning (0.014 sec)
+Records: 3  Duplicates: 0  Warnings: 1
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+
+| did | dname  | age  | mo_no      | degree |
++-----+--------+------+------------+--------+
+| 101 | sam    |   37 | 98765422   | mbbs   |
+| 102 | Siya   |   45 | 9876543210 | bhms   |
+| 103 | Aakash |   26 | 6789345678 | bhms   |
++-----+--------+------+------------+--------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from doctors order by dname;
++-----+--------+------+------------+--------+
+| did | dname  | age  | mo_no      | degree |
++-----+--------+------+------------+--------+
+| 103 | Aakash |   26 | 6789345678 | bhms   |
+| 101 | sam    |   37 | 98765422   | mbbs   |
+| 102 | Siya   |   45 | 9876543210 | bhms   |
++-----+--------+------+------------+--------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from doctors order by dname limit 2;
++-----+--------+------+------------+--------+
+| did | dname  | age  | mo_no      | degree |
++-----+--------+------+------------+--------+
+| 103 | Aakash |   26 | 6789345678 | bhms   |
+| 101 | sam    |   37 | 98765422   | mbbs   |
++-----+--------+------+------------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> select distinct degree from doctors;
++--------+
+| degree |
++--------+
+| mbbs   |
+| bhms   |
++--------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> create table opds(opdid int primary key,did int,patientid int,prescription varchar(50));
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [hospital]> alter table opds add constraint fk_did foreign key (did) references doctors (did);
+Query OK, 0 rows affected (0.069 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> show create table opds\G
+*************************** 1. row ***************************
+       Table: opds
+Create Table: CREATE TABLE `opds` (
+  `opdid` int(11) NOT NULL,
+  `did` int(11) DEFAULT NULL,
+  `patientid` int(11) DEFAULT NULL,
+  `prescription` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`opdid`),
+  KEY `fk_did` (`did`),
+  CONSTRAINT `fk_did` FOREIGN KEY (`did`) REFERENCES `doctors` (`did`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+1 row in set (0.003 sec)
+
+MariaDB [hospital]>

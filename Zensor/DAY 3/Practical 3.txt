@@ -1,0 +1,487 @@
+MariaDB [(none)]> use hospital;
+Database changed
+
+MariaDB [hospital]> show tables;
++--------------------+
+| Tables_in_hospital |
++--------------------+
+| doctors            |
+| icu                |
+| medical            |
+| opd                |
+| opds               |
+| patients           |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+
+| did | dname  | age  | mo_no      | degree |
++-----+--------+------+------------+--------+
+| 101 | sam    |   37 | 98765422   | mbbs   |
+| 102 | Siya   |   45 | 9876543210 | bhms   |
+| 103 | Aakash |   26 | 6789345678 | bhms   |
++-----+--------+------+------------+--------+
+3 rows in set (0.079 sec)
+
+MariaDB [hospital]> select * from patients;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 |
++-----+---------+--------------+------+----------+------------+
+5 rows in set (0.025 sec)
+
+MariaDB [hospital]> select * from medical;
++------------+---------------+----------+---------+
+| medicineid | medicine_name | quantity | company |
++------------+---------------+----------+---------+
+|        111 | abc           |      500 | aaa     |
+|        222 | paracitmol    |      200 | bbb     |
+|        333 | coldex        |      987 | ccc     |
+|        444 | pqr           |      456 | ddd     |
+|        555 | oz            |      550 | eee     |
++------------+---------------+----------+---------+
+5 rows in set (0.020 sec)
+
+MariaDB [hospital]> select * from icu;
++------+----------------+
+| id   | no_of_patients |
++------+----------------+
+| 1001 |              2 |
+| 1002 |              5 |
+| 1003 |              6 |
+| 1004 |              2 |
+| 1005 |              7 |
++------+----------------+
+5 rows in set (0.018 sec)
+
+MariaDB [hospital]> select * from opd;
++-------+----------+-----------+---------------------+
+| opdid | doctorid | patientid | prescription        |
++-------+----------+-----------+---------------------+
+|     1 |      101 |       201 | Medicines for dengu |
+|     2 |      102 |       202 | Sickness            |
+|     3 |      103 |       203 | cough               |
+|     4 |      104 |       204 | typhoid             |
+|     5 |      105 |       205 | fewer               |
++-------+----------+-----------+---------------------+
+5 rows in set (0.014 sec)
+
+MariaDB [hospital]> truncate icu;
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [hospital]> select * from icu;
+Empty set (0.001 sec)
+
+MariaDB [hospital]> alter table opd add constraint check (opdid > 0);
+Query OK, 5 rows affected (0.072 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from opd;
++-------+----------+-----------+---------------------+
+| opdid | doctorid | patientid | prescription        |
++-------+----------+-----------+---------------------+
+|     1 |      101 |       201 | Medicines for dengu |
+|     2 |      102 |       202 | Sickness            |
+|     3 |      103 |       203 | cough               |
+|     4 |      104 |       204 | typhoid             |
+|     5 |      105 |       205 | fewer               |
++-------+----------+-----------+---------------------+
+5 rows in set (0.003 sec)
+
+MariaDB [hospital]> insert into opd values(0,106,206,"Medicines
+for dengu");
+ERROR 4025 (23000): CONSTRAINT `CONSTRAINT_1` failed for `hospital`.`opd`
+
+MariaDB [hospital]> show create table opds\G
+*************************** 1. row ***************************
+       Table: opds
+Create Table: CREATE TABLE `opds` (
+  `opdid` int(11) NOT NULL,
+  `did` int(11) DEFAULT NULL,
+  `patientid` int(11) DEFAULT NULL,
+  `prescription` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`opdid`),
+  KEY `fk_did` (`did`),
+  CONSTRAINT `fk_did` FOREIGN KEY (`did`) REFERENCES `doctors` (`did`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+1 row in set (0.021 sec)
+
+MariaDB [hospital]> show create table opd\G
+*************************** 1. row ***************************
+       Table: opd
+Create Table: CREATE TABLE `opd` (
+  `opdid` int(11) NOT NULL,
+  `doctorid` int(11) DEFAULT NULL,
+  `patientid` int(11) DEFAULT NULL,
+  `prescription` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`opdid`),
+  CONSTRAINT `CONSTRAINT_1` CHECK (`opdid` > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+1 row in set (0.000 sec)
+
+MariaDB [hospital]> select * from patients;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 |
++-----+---------+--------------+------+----------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [hospital]> select * from patients where address="amrawati";
++-----+---------+----------+------+----------+------------+
+| pid | pname   | disease  | age  | address  | mo_no      |
++-----+---------+----------+------+----------+------------+
+| 206 | kalyani | cold     |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache |   24 | amrawati | 6789453456 |
++-----+---------+----------+------+----------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where address is null;
+Empty set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where address <> "pune";
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 |
++-----+---------+--------------+------+----------+------------+
+4 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where address="nashik" and age=30;
++-----+-------+---------+------+---------+------------+
+| pid | pname | disease | age  | address | mo_no      |
++-----+-------+---------+------+---------+------------+
+| 204 | tommy | typhoid |   30 | nashik  | 7896453456 |
++-----+-------+---------+------+---------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [hospital]> select pname,disease,age from patients where age>30;
++---------+--------------+------+
+| pname   | disease      | age  |
++---------+--------------+------+
+| ram     | normal fewer |   45 |
+| sanket  | cough        |   40 |
+| kalyani | cold         |   35 |
++---------+--------------+------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select pname,disease,age from patients where age<30;
++-------+----------+------+
+| pname | disease  | age  |
++-------+----------+------+
+| rinku | headache |   24 |
++-------+----------+------+
+1 row in set (0.001 sec)
+
+MariaDB [hospital]> select pname,disease,age from patients where age>=30;
++---------+--------------+------+
+| pname   | disease      | age  |
++---------+--------------+------+
+| ram     | normal fewer |   45 |
+| sanket  | cough        |   40 |
+| tommy   | typhoid      |   30 |
+| kalyani | cold         |   35 |
++---------+--------------+------+
+4 rows in set (0.000 sec)
+
+MariaDB [hospital]> select pname,disease,age from patients where age<=30;
++-------+----------+------+
+| pname | disease  | age  |
++-------+----------+------+
+| tommy | typhoid  |   30 |
+| rinku | headache |   24 |
++-------+----------+------+
+2 rows in set (0.000 sec)
+
+MariaDB [hospital]> select * from patients where address="nashik" or age=35;
++-----+---------+---------+------+----------+------------+
+| pid | pname   | disease | age  | address  | mo_no      |
++-----+---------+---------+------+----------+------------+
+| 204 | tommy   | typhoid |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold    |   35 | amrawati | 9856345789 |
++-----+---------+---------+------+----------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where age between 35 and 45;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
++-----+---------+--------------+------+----------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where pid in (206,202,204);
++-----+---------+---------+------+----------+------------+
+| pid | pname   | disease | age  | address  | mo_no      |
++-----+---------+---------+------+----------+------------+
+| 202 | sanket  | cough   |   40 | pune     | 7896457867 |
+| 204 | tommy   | typhoid |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold    |   35 | amrawati | 9856345789 |
++-----+---------+---------+------+----------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where pname like 'r%' order by pname;
++-----+-------+--------------+------+----------+------------+
+| pid | pname | disease      | age  | address  | mo_no      |
++-----+-------+--------------+------+----------+------------+
+| 201 | ram   | normal fewer |   45 | nandura  | 9867453467 |
+| 207 | rinku | headache     |   24 | amrawati | 6789453456 |
++-----+-------+--------------+------+----------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients where pname like '_o%' order by pname;
++-----+-------+---------+------+---------+------------+
+| pid | pname | disease | age  | address | mo_no      |
++-----+-------+---------+------+---------+------------+
+| 204 | tommy | typhoid |   30 | nashik  | 7896453456 |
++-----+-------+---------+------+---------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [hospital]> select * from patients where age>=all (select age from patients where pid=204) order by pid desc;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
++-----+---------+--------------+------+----------+------------+
+4 rows in set (0.002 sec)
+
+MariaDB [hospital]> select * from patients where age>=any (select age from patients where pid in (204,206)) order by pid desc;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
++-----+---------+--------------+------+----------+------------+
+4 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients p where exists(select 1 from opd o where p.pid=o.patientid);
++-----+--------+--------------+------+---------+------------+
+| pid | pname  | disease      | age  | address | mo_no      |
++-----+--------+--------------+------+---------+------------+
+| 201 | ram    | normal fewer |   45 | nandura | 9867453467 |
+| 202 | sanket | cough        |   40 | pune    | 7896457867 |
+| 204 | tommy  | typhoid      |   30 | nashik  | 7896453456 |
++-----+--------+--------------+------+---------+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select pname,age,disease, case(age) when 1-18 then 'child' when 19-30 then 'young' when 31-70 then 'old' end nature from patients;
++---------+------+--------------+--------+
+| pname   | age  | disease      | nature |
++---------+------+--------------+--------+
+| ram     |   45 | normal fewer | NULL   |
+| sanket  |   40 | cough        | NULL   |
+| tommy   |   30 | typhoid      | NULL   |
+| kalyani |   35 | cold         | NULL   |
+| rinku   |   24 | headache     | NULL   |
++---------+------+--------------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+
+| did | dname  | age  | mo_no      | degree |
++-----+--------+------+------------+--------+
+| 101 | sam    |   37 | 98765422   | mbbs   |
+| 102 | Siya   |   45 | 9876543210 | bhms   |
+| 103 | Aakash |   26 | 6789345678 | bhms   |
++-----+--------+------+------------+--------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> alter table doctors add column doj date;
+Query OK, 0 rows affected (0.021 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> insert into doctors(doj) values("2000-04-03"),("2012-09-08"),("1998-08-09");
+Query OK, 3 rows affected (0.003 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+------------+
+| did | dname  | age  | mo_no      | degree | doj        |
++-----+--------+------+------------+--------+------------+
+| 101 | sam    |   37 | 98765422   | mbbs   | NULL       |
+| 102 | Siya   |   45 | 9876543210 | bhms   | NULL       |
+| 103 | Aakash |   26 | 6789345678 | bhms   | NULL       |
+| 104 | NULL   | NULL | NULL       | NULL   | 2000-04-03 |
+| 105 | NULL   | NULL | NULL       | NULL   | 2012-09-08 |
+| 106 | NULL   | NULL | NULL       | NULL   | 1998-08-09 |
++-----+--------+------+------------+--------+------------+
+6 rows in set (0.000 sec)
+
+MariaDB [hospital]> update doctors set doj="2000-04-03" where did=101;
+Query OK, 1 row affected (0.012 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update doctors set doj="2012-09-08" where did=102;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update doctors set doj="1998-08-09" where did=102;
+Query OK, 1 row affected (0.012 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> delete from doctors where did in (104,105,106);
+Query OK, 3 rows affected (0.012 sec)
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+------------+
+| did | dname  | age  | mo_no      | degree | doj        |
++-----+--------+------+------------+--------+------------+
+| 101 | sam    |   37 | 98765422   | mbbs   | 2000-04-03 |
+| 102 | Siya   |   45 | 9876543210 | bhms   | 1998-08-09 |
+| 103 | Aakash |   26 | 6789345678 | bhms   | NULL       |
++-----+--------+------+------------+--------+------------+
+3 rows in set (0.000 sec)
+
+MariaDB [hospital]> update doctors set doj="2012-09-08" where did=103;
+Query OK, 1 row affected (0.011 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> select * from doctors;
++-----+--------+------+------------+--------+------------+
+| did | dname  | age  | mo_no      | degree | doj        |
++-----+--------+------+------------+--------+------------+
+| 101 | sam    |   37 | 98765422   | mbbs   | 2000-04-03 |
+| 102 | Siya   |   45 | 9876543210 | bhms   | 1998-08-09 |
+| 103 | Aakash |   26 | 6789345678 | bhms   | 2012-09-08 |
++-----+--------+------+------------+--------+------------+
+3 rows in set (0.000 sec)
+
+MariaDB [hospital]> select did,dname,degree, case(2022 - year(doj))
+    -> when 10 then '10 year' when 22 then '22 year' when 24 then '24 years' end expirence from
+    -> doctors;
++-----+--------+--------+-----------+
+| did | dname  | degree | expirence |
++-----+--------+--------+-----------+
+| 101 | sam    | mbbs   | 22 year   |
+| 102 | Siya   | bhms   | 24 years  |
+| 103 | Aakash | bhms   | 10 year   |
++-----+--------+--------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [hospital]> select * from patients;
++-----+---------+--------------+------+----------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      |
++-----+---------+--------------+------+----------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 |
++-----+---------+--------------+------+----------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [hospital]> alter table patients add column pdate date;
+Query OK, 0 rows affected (0.019 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> update patients set pdate="2022-09-08" where pid=201;
+Query OK, 1 row affected (0.012 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update patients set pdate="2021-09-08" where pid=202;
+Query OK, 1 row affected (0.011 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update patients set pdate="2020-09-08" where pid=204;
+Query OK, 1 row affected (0.011 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update patients set pdate="2022-09-10" where pid=206;
+Query OK, 1 row affected (0.012 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> update patients set pdate="2019-09-10" where pid=207;
+Query OK, 1 row affected (0.012 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [hospital]> select * from patients;
++-----+---------+--------------+------+----------+------------+------------+
+| pid | pname   | disease      | age  | address  | mo_no      | pdate      |
++-----+---------+--------------+------+----------+------------+------------+
+| 201 | ram     | normal fewer |   45 | nandura  | 9867453467 | 2022-09-08 |
+| 202 | sanket  | cough        |   40 | pune     | 7896457867 | 2021-09-08 |
+| 204 | tommy   | typhoid      |   30 | nashik   | 7896453456 | 2020-09-08 |
+| 206 | kalyani | cold         |   35 | amrawati | 9856345789 | 2022-09-10 |
+| 207 | rinku   | headache     |   24 | amrawati | 6789453456 | 2019-09-10 |
++-----+---------+--------------+------+----------+------------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [hospital]> select pname,age from patients where year(pdate) in (2022);
++---------+------+
+| pname   | age  |
++---------+------+
+| ram     |   45 |
+| kalyani |   35 |
++---------+------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]> create table visiting_doctor(vd_id int primary key,name varchar(50),degree varchar(50));
+Query OK, 0 rows affected (0.029 sec)
+
+MariaDB [hospital]> insert into visiting_doctor (select did,dname,degree from doctors);
+Query OK, 3 rows affected (0.013 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [hospital]> select * from visiting_doctor;
++-------+--------+--------+
+| vd_id | name   | degree |
++-------+--------+--------+
+|   101 | sam    | mbbs   |
+|   102 | Siya   | bhms   |
+|   103 | Aakash | bhms   |
++-------+--------+--------+
+3 rows in set (0.000 sec)
+
+MariaDB [hospital]> select o.doctorid,d.dname,o.patientid,p.pname
+    -> from opd as o
+    -> join patients as p
+    -> on o.patientid=p.pid
+    -> join doctors as d
+    -> on o.doctorid=d.did;
++----------+-------+-----------+--------+
+| doctorid | dname | patientid | pname  |
++----------+-------+-----------+--------+
+|      101 | sam   |       201 | ram    |
+|      102 | Siya  |       202 | sanket |
++----------+-------+-----------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [hospital]>  select o.doctorid,d.dname,o.patientid,p.pname
+    ->  from opd as o
+    ->  left join patients as p
+    ->  on o.patientid=p.pid
+    ->  left join doctors as d
+    ->  on o.doctorid=d.did;
++----------+--------+-----------+--------+
+| doctorid | dname  | patientid | pname  |
++----------+--------+-----------+--------+
+|      101 | sam    |       201 | ram    |
+|      102 | Siya   |       202 | sanket |
+|      103 | Aakash |       203 | NULL   |
+|      104 | NULL   |       204 | tommy  |
+|      105 | NULL   |       205 | NULL   |
++----------+--------+-----------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [hospital]>

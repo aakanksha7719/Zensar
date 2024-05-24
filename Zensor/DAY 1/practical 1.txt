@@ -1,0 +1,228 @@
+mysql>  create database super_market;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use super_market;
+Database changed
+
+mysql> create table supermarket(item_name varchar(50),itemunit int,price int,quantity int);
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> insert into supermarket values("laptops",1,50000,200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("LED",1,35000,100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Fridge",1,20000,150);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Fans",1,1000,100);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Chairs",1,500,300);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Tables",1,600,350);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("School Bags",1,600,250);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Washing machine",1,15000,250);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into supermarket values("Sewing machine",1,7000,250);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+
+| item_name       | itemunit | price | quantity |
++-----------------+----------+-------+----------+
+| laptops         |        1 | 50000 |      200 |
+| LED             |        1 | 35000 |      100 |
+| Fridge          |        1 | 20000 |      150 |
+| Fans            |        1 |  1000 |      100 |
+| Chairs          |        1 |   500 |      300 |
+| Tables          |        1 |   600 |      350 |
+| School Bags     |        1 |   600 |      250 |
+| Washing machine |        1 | 15000 |      250 |
+| Sewing machine  |        1 |  7000 |      250 |
++-----------------+----------+-------+----------+
+9 rows in set (0.01 sec)
+
+mysql> alter table supermarket add column minprice int;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+----------+
+| item_name       | itemunit | price | quantity | minprice |
++-----------------+----------+-------+----------+----------+
+| laptops         |        1 | 50000 |      200 |     NULL |
+| LED             |        1 | 35000 |      100 |     NULL |
+| Fridge          |        1 | 20000 |      150 |     NULL |
+| Fans            |        1 |  1000 |      100 |     NULL |
+| Chairs          |        1 |   500 |      300 |     NULL |
+| Tables          |        1 |   600 |      350 |     NULL |
+| School Bags     |        1 |   600 |      250 |     NULL |
+| Washing machine |        1 | 15000 |      250 |     NULL |
+| Sewing machine  |        1 |  7000 |      250 |     NULL |
++-----------------+----------+-------+----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> alter table supermarket add column maxprice int;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+----------+----------+
+| item_name       | itemunit | price | quantity | minprice | maxprice |
++-----------------+----------+-------+----------+----------+----------+
+| laptops         |        1 | 50000 |      200 |     NULL |     NULL |
+| LED             |        1 | 35000 |      100 |     NULL |     NULL |
+| Fridge          |        1 | 20000 |      150 |     NULL |     NULL |
+| Fans            |        1 |  1000 |      100 |     NULL |     NULL |
+| Chairs          |        1 |   500 |      300 |     NULL |     NULL |
+| Tables          |        1 |   600 |      350 |     NULL |     NULL |
+| School Bags     |        1 |   600 |      250 |     NULL |     NULL |
+| Washing machine |        1 | 15000 |      250 |     NULL |     NULL |
+| Sewing machine  |        1 |  7000 |      250 |     NULL |     NULL |
++-----------------+----------+-------+----------+----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> update supermarket set minprice=40000 where item_name="laptops";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=30000 where item_name="LED";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=15000 where item_name="Fridge";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=800 where item_name="Fans";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=400 where item_name="Chairs";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=500 where item_name="Tables";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=500 where item_name="School Bags";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=12000 where item_name="Washing machine";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set minprice=5000 where item_name="Sewing machine";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+----------+----------+
+| item_name       | itemunit | price | quantity | minprice | maxprice |
++-----------------+----------+-------+----------+----------+----------+
+| laptops         |        1 | 50000 |      200 |    40000 |     NULL |
+| LED             |        1 | 35000 |      100 |    30000 |     NULL |
+| Fridge          |        1 | 20000 |      150 |    15000 |     NULL |
+| Fans            |        1 |  1000 |      100 |      800 |     NULL |
+| Chairs          |        1 |   500 |      300 |      400 |     NULL |
+| Tables          |        1 |   600 |      350 |      500 |     NULL |
+| School Bags     |        1 |   600 |      250 |      500 |     NULL |
+| Washing machine |        1 | 15000 |      250 |    12000 |     NULL |
+| Sewing machine  |        1 |  7000 |      250 |     5000 |     NULL |
++-----------------+----------+-------+----------+----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> update supermarket set maxprice=60000 where item_name="laptops";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=40000 where item_name="LED";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=30000 where item_name="Fridge";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=1200 where item_name="Fans";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=600 where item_name="Chairs";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=800 where item_name="Tables";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=800 where item_name="School Bags";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=17000 where item_name="Washing machine";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update supermarket set maxprice=8000 where item_name="Sewing machine";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+----------+----------+
+| item_name       | itemunit | price | quantity | minprice | maxprice |
++-----------------+----------+-------+----------+----------+----------+
+| laptops         |        1 | 50000 |      200 |    40000 |    60000 |
+| LED             |        1 | 35000 |      100 |    30000 |    40000 |
+| Fridge          |        1 | 20000 |      150 |    15000 |    30000 |
+| Fans            |        1 |  1000 |      100 |      800 |     1200 |
+| Chairs          |        1 |   500 |      300 |      400 |      600 |
+| Tables          |        1 |   600 |      350 |      500 |      800 |
+| School Bags     |        1 |   600 |      250 |      500 |      800 |
+| Washing machine |        1 | 15000 |      250 |    12000 |    17000 |
+| Sewing machine  |        1 |  7000 |      250 |     5000 |     8000 |
++-----------------+----------+-------+----------+----------+----------+
+9 rows in set (0.00 sec)
+
+mysql> describe supermarket;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| item_name | varchar(50) | YES  |     | NULL    |       |
+| itemunit  | int         | YES  |     | NULL    |       |
+| price     | int         | YES  |     | NULL    |       |
+| quantity  | int         | YES  |     | NULL    |       |
+| minprice  | int         | YES  |     | NULL    |       |
+| maxprice  | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+6 rows in set (0.03 sec)
+
+mysql> delete from supermarket where item_name="Chairs";
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from supermarket;
++-----------------+----------+-------+----------+----------+----------+
+| item_name       | itemunit | price | quantity | minprice | maxprice |
++-----------------+----------+-------+----------+----------+----------+
+| laptops         |        1 | 50000 |      200 |    40000 |    60000 |
+| LED             |        1 | 35000 |      100 |    30000 |    40000 |
+| Fridge          |        1 | 20000 |      150 |    15000 |    30000 |
+| Fans            |        1 |  1000 |      100 |      800 |     1200 |
+| Tables          |        1 |   600 |      350 |      500 |      800 |
+| School Bags     |        1 |   600 |      250 |      500 |      800 |
+| Washing machine |        1 | 15000 |      250 |    12000 |    17000 |
+| Sewing machine  |        1 |  7000 |      250 |     5000 |     8000 |
++-----------------+----------+-------+----------+----------+----------+
+8 rows in set (0.00 sec)
+
+mysql>

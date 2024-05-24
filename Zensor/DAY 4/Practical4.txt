@@ -1,0 +1,24 @@
+1)create table project and projallocate
+  - project coloumn -> projid,projname
+  - projallocate column -> empid,empname,projid
+	- insert 5 rows in each table
+	- perform full join projid,projname,empid
+
+2)create table salesinfo with region,salsman,sales  
+  coloumn
+  - insert 10 rows 
+  write query for show
+############################################ 
+  region         salesman         sales
+--------------------------------------------
+  2ndrow_value  2ndrow_value   2ndrow_value 
+  6throw_value  6throw_value   6throw_value
+  1strow_value  1strow_value   1strow_value
+
+3)Create table employee and departmants 
+  employee coloumn -> empid,empname,deptid
+  departments column -> deptid,deptname
+	-insert 10 rows
+  -perform join operation on tables - Inner join,Left join,Right join,Full join,Cross join
+
+  
